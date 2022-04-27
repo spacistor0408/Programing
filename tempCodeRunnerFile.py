@@ -1,0 +1,1 @@
+start = time.time() # record merge time
