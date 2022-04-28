@@ -1,3 +1,4 @@
+from decimal import DivisionByZero
 import multiprocessing as mp
 import threading as td
 import time
@@ -7,14 +8,13 @@ Path = "input/"
 FileType = ".txt"
 
 def ReadFile(filename):
-    try:
-        Dataset = []
-        with open( Path + filename + FileType, mode="r" ) as File:
-            for line in File.readlines():
-                Dataset.append(int(line))
-        return Dataset
-    except IOError:
-        print( 'ERROR: can not found ' + filename + '\n' )
+    
+    Dataset = []
+    with open( Path + filename + FileType, mode="r" ) as File:
+        for line in File.readlines():
+            Dataset.append(int(line))
+    return Dataset
+    
 
 def WriteFile(filename, CPU_TIME, Dataset):
     with open( filename + FileType, mode="w" ) as File:
@@ -139,55 +139,73 @@ def main():
 
     while int(input( "Select a optin to continue...( 1:Sort / 0:Exit ) : " )):
         filename = input("Enter File Name: ")
-        Dataset = ReadFile(filename)
-        # PrintData( Dataset )
-
-        selection = int(input( "Please Enter Method ( 1 / 2 / 3 / 4 ): " ))
-
-        if selection == 1:
-            print( "Running Bubble Sort...\n" )
-
-            start = time.time()
-            BubbleSort(Dataset)
-            end = time.time()
-
-            WriteFile(filename + "_output1", round(end-start, 14), Dataset )
-            print( "Bubble Sort Completed !\n\n" )
-
-        elif selection == 2:
-            dividCount = int(input( "Please Enter a number you want to divid: " ))
-            print( "Running Merge Sort...\n" )
-
-            start = time.time()
-            A = MergeSort(Dataset, dividCount)
-            end = time.time()
-
-            WriteFile(filename + "_output2", round(end-start, 14), A )
-            print( "Merge Sort Completed !\n\n" )
-            
-        elif selection == 3:
-            dividCount = int(input( "Please Enter a number you want to divid: " ))
-            print( "Running Merge Sort with multi-processing...\n" )
-
-            start = time.time()
-            A = MergeSort_MultiProcess(Dataset, dividCount)
-            end = time.time()
-            WriteFile(filename + "_output3", round(end-start, 14), A )
-            print( "Merge Sort Completed !\n\n" )
-
-        elif selection == 4:
-            dividCount = int(input( "Please Enter a number you want to divid: " ))
-            print( "Running Merge Sort with threads...\n" )
-
-            start = time.time()
-            A = MergeSort_Thread(Dataset, dividCount)
-            end = time.time()
-            WriteFile(filename + "_output4", round(end-start, 14), A )
-            print( "Merge Sort Completed !\n\n" )
-        
+        try:
+            Dataset = ReadFile(filename)
+        except IOError:
+            print( 'ERROR: can not found ' + filename + '\n' )
         else:
-            print( "ERROR: the method doesn't exist\n" )
+            size = len(Dataset)
+            selection = int(input( "Please Enter Method ( 1 / 2 / 3 / 4 ): " ))
 
+            if selection == 1:
+                print( "Running Bubble Sort...\n" )
+
+                start = time.time()
+                BubbleSort(Dataset)
+                end = time.time()
+
+                WriteFile(filename + "_output1", round(end-start, 14), Dataset )
+                print( "Bubble Sort Completed !\n\n" )
+
+            elif selection == 2:
+                dividCount = int(input( "Please Enter a number you want to divid: " ))
+                try:
+                    if ( dividCount > size or dividCount <= 0  ): raise ValueError
+                except ValueError:
+                    print( "Out of Dataset size or equal to zero !\n" )
+                else:
+                    print( "Running Merge Sort...\n" )
+
+                    start = time.time()
+                    A = MergeSort(Dataset, dividCount)
+                    end = time.time()
+
+                    WriteFile(filename + "_output2", round(end-start, 14), A )
+                    print( "Merge Sort Completed !\n\n" )
+                
+            elif selection == 3:
+                dividCount = int(input( "Please Enter a number you want to divid: " ))
+                try:
+                    if ( dividCount > size or dividCount <= 0 ): raise ValueError
+                except ValueError:
+                    print( "Out of Dataset size or equal to zero !\n" )
+                else:
+                    print( "Running Merge Sort with multi-processing...\n" )
+
+                    start = time.time()
+                    A = MergeSort_MultiProcess(Dataset, dividCount)
+                    end = time.time()
+                    WriteFile(filename + "_output3", round(end-start, 14), A )
+                    print( "Merge Sort Completed !\n\n" )
+
+            elif selection == 4:
+                dividCount = int(input( "Please Enter a number you want to divid: " ))
+                try:
+                    if ( dividCount > size or dividCount <= 0 ): raise ValueError
+                except ValueError:
+                    print( "Out of Dataset size or equal to zero !\n" )
+                else:
+                    print( "Running Merge Sort with threads...\n" )
+
+                    start = time.time()
+                    A = MergeSort_Thread(Dataset, dividCount)
+                    end = time.time()
+                    WriteFile(filename + "_output4", round(end-start, 14), A )
+                    print( "Merge Sort Completed !\n\n" )
+            
+            else:
+                print( "ERROR: the method doesn't exist\n" )
+    print( "Program Exist...\n" )
 
 if __name__ == '__main__':
     main()
