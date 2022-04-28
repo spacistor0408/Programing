@@ -30,10 +30,10 @@
 
 5. 分析
 
-| method/time | 1w      | 10w     | 50w       | 100w
-| method1	  | 6.906   | 717.449 | 18933.509 | 75734.036
-| method2	  | 0.049   | 0.927	  | 17.391    | 70.031
-| method3	  | 8.396   | 9.106	  | 11.697    | 54.371
-| method4     | 0.14    | 1.061   | 17.482    | 69.473
+ | method/time | 1w      | 10w     | 50w       | 100w
+ | method1	   | 6.906   | 717.449 | 18933.509 | 75734.036
+ | method2	   | 0.049   | 0.927   | 17.391    | 70.031
+ | method3	   | 8.396   | 9.106   | 11.697    | 54.371
+ | method4     | 0.14    | 1.061   | 17.482    | 69.473
 
 ![image](https://github.com/spacistor0408/Threads_OSProject01/blob/master/chart.png)
