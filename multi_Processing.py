@@ -120,10 +120,11 @@ def CutArray( A, k ):
     while index < len(A):
         subArray = []
 
-        if index+partition >= len(A)-1:
-            partition += len(A)%partition
+        # if index+partition >= len(A)-1:
+        #     partition += len(A)%partition
 
         for i in range(partition):
+            if i+index == len(A): break
             subArray.append(A[index+i])
 
         index += partition
